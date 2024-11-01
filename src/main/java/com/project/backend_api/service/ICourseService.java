@@ -11,5 +11,6 @@ public interface ICourseService {
     Course updateCourse(Long id, Course course); // Cập nhật Course
     Optional<Course> getCourseById(Long id);               // Lấy Course theo ID
     List<Course> getAllCourses();                // Lấy tất cả Course
-    void deleteCourse(Long id); 
+    void deleteCourse(Long id);
+    Long getLatestCourseId();
 }

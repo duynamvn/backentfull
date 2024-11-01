@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +32,31 @@ public class CourseController {
 
     // Thêm Course mới
     @PostMapping
-    public Course createCourse(@RequestBody Course course) {
-        return iCourseService.saveCourse(course);
+    public ResponseEntity<?> createCourse(@RequestBody Course course) {
+        try {
+            String generateCourseCode = generateCourseCode(course.getCourseName());
+            course.setCourseCode(generateCourseCode);
+            Course existingCourse = iCourseService.saveCourse(course);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Course code already exists.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
+        }
+
+    }
+
+    private String generateCourseCode(String courseName) {
+
+        String[] words = courseName.split(" ");
+        StringBuilder code = new StringBuilder();
+        for (String word : words) {
+            code.append(word.charAt(0));
+        }
+
+        Long latestId = iCourseService.getLatestCourseId();
+        int newId = latestId != null ? (int) (latestId + 1) : 1;
+
+        return code.toString().toUpperCase() + String.format("%02d", newId);
     }
 
     // Cập nhật Course theo ID

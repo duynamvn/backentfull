@@ -72,4 +72,10 @@ public class CourseServiceImpl implements ICourseService{
         courseRepository.deleteById(id);
     }
 
+    @Override
+    public Long getLatestCourseId() {
+        List<Course> courses = courseRepository.findTopCoursesOrderByIdDesc();
+        return courses.isEmpty() ? null : courses.get(0).getId();
+    }
+
 }

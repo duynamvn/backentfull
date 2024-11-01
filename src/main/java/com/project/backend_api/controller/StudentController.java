@@ -36,7 +36,11 @@ public class StudentController {
 		return ResponseEntity.ok(studentDTO);
 	}
 	
-	 
+	@GetMapping("/image")
+	public ResponseEntity<List<Student>> getAllStudentImage(){
+		List<Student> students = iStudentService.getAllStudent();
+		return ResponseEntity.ok(students);
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
