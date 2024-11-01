@@ -1,8 +1,5 @@
 package com.project.backend_api.mapper;
 
-import java.awt.Image;
-
-import com.project.backend_api.dto.ImageDTO;
 import com.project.backend_api.dto.StudentDTO;
 import com.project.backend_api.dto.StudentTypeDTO;
 import com.project.backend_api.model.Student;
@@ -22,6 +19,7 @@ public class StudentMapper {
 		dto.setEmail(student.getEmail());
 		dto.setActivate(student.getActivate());
 		dto.setStudentCode(student.getStudentCode());
+		dto.setImageName(student.getImageName());
 		
 		StudentType studentType = student.getStudentType();
 		if (studentType != null) {

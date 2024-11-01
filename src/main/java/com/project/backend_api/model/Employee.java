@@ -55,6 +55,8 @@ public class Employee {
 
     @Column(name = "address")
     private String address;
+
+    private String imageName;
     
     // Mối quan hệ 1:N với TeachingAssignment
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

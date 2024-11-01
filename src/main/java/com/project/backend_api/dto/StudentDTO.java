@@ -30,6 +30,8 @@ public class StudentDTO {
     private Boolean activate; // Trạng thái kích hoạt (1: Kích hoạt, 0: Không kích hoạt)
 
     private String studentCode; // Mã sinh viên
+
+    private String imageName;
     
     private StudentTypeDTO studentType;
 

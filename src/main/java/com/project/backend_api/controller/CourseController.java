@@ -86,4 +86,11 @@ public class CourseController {
     public void deleteCourse(@PathVariable Long id) {
         iCourseService.deleteCourse(id);
     }
+
+    @GetMapping("/open")
+    public List<CourseDTO> getOpenCourses() {
+        List<Course> courses = iCourseService.getOpenCourses();
+        return courses.stream().map(CourseMapper::toDto).collect(Collectors.toList());
+    }
+
 }

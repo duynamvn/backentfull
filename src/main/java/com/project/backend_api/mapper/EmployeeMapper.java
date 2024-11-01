@@ -22,7 +22,8 @@ public class EmployeeMapper {
 		dto.setPhoneNumber(employee.getPhoneNumber());
 		dto.setActivate(employee.getActivate());
 		dto.setAddress(employee.getAddress());
-		
+		dto.setImageName(employee.getImageName());
+
 		Degree degree = employee.getDegree();
 		if (degree != null) {
 			DegreeDTO degreeDTO = new DegreeDTO();

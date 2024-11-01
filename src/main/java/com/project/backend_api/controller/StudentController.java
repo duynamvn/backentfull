@@ -35,13 +35,8 @@ public class StudentController {
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(studentDTO);
 	}
-	
-	@GetMapping("/image")
-	public ResponseEntity<List<Student>> getAllStudentImage(){
-		List<Student> students = iStudentService.getAllStudent();
-		return ResponseEntity.ok(students);
-	}
-	
+
+
 	@GetMapping("/{id}")
 	public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
 		Optional<Student> student = iStudentService.getStudentById(id);

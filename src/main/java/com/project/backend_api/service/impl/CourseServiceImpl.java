@@ -1,5 +1,6 @@
 package com.project.backend_api.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +77,12 @@ public class CourseServiceImpl implements ICourseService{
     public Long getLatestCourseId() {
         List<Course> courses = courseRepository.findTopCoursesOrderByIdDesc();
         return courses.isEmpty() ? null : courses.get(0).getId();
+    }
+
+    @Override
+    public List<Course> getOpenCourses() {
+        LocalDate currentDate = LocalDate.now();
+        return courseRepository.findOpenCourses(currentDate);
     }
 
 }

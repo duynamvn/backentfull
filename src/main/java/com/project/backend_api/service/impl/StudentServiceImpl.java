@@ -46,6 +46,8 @@ public class StudentServiceImpl implements IStudentService{
 		existingStudent.setNationalID(student.getNationalID());
 		existingStudent.setEmail(student.getEmail());
 		existingStudent.setActivate(student.getActivate());
+		existingStudent.setImageName(student.getImageName());
+
 		existingStudent.setStudentCode(student.getStudentCode());
 		existingStudent.setStudentType(student.getStudentType());
 		return studentRepository.save(existingStudent);

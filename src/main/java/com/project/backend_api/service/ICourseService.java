@@ -13,4 +13,5 @@ public interface ICourseService {
     List<Course> getAllCourses();                // Lấy tất cả Course
     void deleteCourse(Long id);
     Long getLatestCourseId();
+    List<Course> getOpenCourses();
 }

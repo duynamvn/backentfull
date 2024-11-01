@@ -22,6 +22,7 @@ public class EmployeeDTO {
     private String phoneNumber;
     private Boolean activate;
     private String address;
+    private String imageName;
     private EmployeeType employeeType;
     private DegreeDTO degree;
     private SpecializationDTO specialization;

@@ -43,6 +43,7 @@ public class EmployeeServiceImpl implements IEmployeeService{
             existingEmployee.setPhoneNumber(employee.getPhoneNumber());
             existingEmployee.setActivate(employee.getActivate());
             existingEmployee.setAddress(employee.getAddress());
+            existingEmployee.setImages(employee.getImages());
             
             existingEmployee.setDegree(employee.getDegree());
             existingEmployee.setSpecialization(employee.getSpecialization());
