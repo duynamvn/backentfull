@@ -45,6 +45,7 @@ public class EmployeeServiceImpl implements IEmployeeService{
             existingEmployee.setAddress(employee.getAddress());
             
             existingEmployee.setDegree(employee.getDegree());
+            existingEmployee.setSpecialization(employee.getSpecialization());
             return employeeRepository.save(existingEmployee);
         }
         return null;

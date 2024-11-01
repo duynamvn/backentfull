@@ -44,38 +44,5 @@ public class TeachingAbility {
     @JoinColumn(name = "employee_id")
     @JsonBackReference(value = "empTeach")
     private Employee employee;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public List<TeachingAssignment> getTeachingAssignments() {
-		return teachingAssignments;
-	}
-
-	public void setTeachingAssignments(List<TeachingAssignment> teachingAssignments) {
-		this.teachingAssignments = teachingAssignments;
-	}
-
-	public Topic getTopic() {
-		return topic;
-	}
-
-	public void setTopic(Topic topic) {
-		this.topic = topic;
-	}
-
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
-    
-    
+ 
 }

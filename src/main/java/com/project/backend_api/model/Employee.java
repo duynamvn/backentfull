@@ -39,7 +39,7 @@ public class Employee {
     private LocalDate dateOfBirth; // Ngày sinh
 
     @Column(name = "gender")
-    private Boolean gender; // Giới tính (1: Nam, 0: Nữ)
+    private String gender; // Giới tính (1: Nam, 0: Nữ)
 
     @Column(name = "national_id")
     private String nationalID; // Số chứng minh nhân dân
@@ -79,5 +79,10 @@ public class Employee {
     @JoinColumn(name = "employee_type_id", nullable = false)
     @JsonBackReference(value = "emp_type")
     private EmployeeType employeeType; // Kiểu nhân viên
+    
+    @ManyToOne
+    @JoinColumn(name = "specialization_id")
+    @JsonBackReference(value = "spec_emp")
+    private Specialization specialization;
 
 }

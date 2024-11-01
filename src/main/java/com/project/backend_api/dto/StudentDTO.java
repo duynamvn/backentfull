@@ -21,7 +21,7 @@ public class StudentDTO {
 
     private String phoneNumber; // Số điện thoại
 
-    private Boolean gender; // Giới tính (1: Nam, 0: Nữ)
+    private String gender; // Giới tính (1: Nam, 0: Nữ)
 
     private String nationalID; // Số chứng minh nhân dân
 

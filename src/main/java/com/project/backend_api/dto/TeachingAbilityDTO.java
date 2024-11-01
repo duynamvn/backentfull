@@ -18,23 +18,5 @@ public class TeachingAbilityDTO {
 
     private TopicDTO topic;
     
-    public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public TopicDTO getTopic() {
-		return topic;
-	}
-	public void setTopic(TopicDTO topic) {
-		this.topic = topic;
-	}
-	public EmployeeDTO getEmployee() {
-		return employee;
-	}
-	public void setEmployee(EmployeeDTO employee) {
-		this.employee = employee;
-	}
-	private EmployeeDTO employee;
+    private EmployeeDTO employee;
 }

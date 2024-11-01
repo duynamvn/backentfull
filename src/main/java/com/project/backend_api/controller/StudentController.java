@@ -36,6 +36,8 @@ public class StudentController {
 		return ResponseEntity.ok(studentDTO);
 	}
 	
+	 
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
 		Optional<Student> student = iStudentService.getStudentById(id);
