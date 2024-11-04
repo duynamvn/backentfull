@@ -3,6 +3,7 @@ package com.project.backend_api.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.project.backend_api.dto.StudentDTO;
 import com.project.backend_api.model.Course;
 
 public interface ICourseService {
@@ -13,5 +14,7 @@ public interface ICourseService {
     List<Course> getAllCourses();                // Lấy tất cả Course
     void deleteCourse(Long id);
     Long getLatestCourseId();
-    List<Course> getOpenCourses();
+
+    List<Course> getOpenCourses(); // Những khóa học đang mở
+    List<StudentDTO> getStudentsByCourseId(Long courseId); // Tìm danh sách học viên theo khóa học
 }

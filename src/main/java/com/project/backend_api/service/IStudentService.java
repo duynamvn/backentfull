@@ -12,5 +12,7 @@ public interface IStudentService {
 	Student createStudent(Student student);
 	Student updateStudent(Long id, Student student);
 	void deleteStudent(Long id);
-	
+
+	Optional<Student> getStudentByStudentCode(String studentCode);
+	List<Student> getStudentByFullName(String fullName);
 }

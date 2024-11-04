@@ -16,15 +16,16 @@ public class EmployeeDTO {
     private Long id;
     private String fullName;
     private LocalDate dateOfBirth;
-    private Boolean gender;
+    private String gender;
     private String nationalID;
     private String email;
     private String phoneNumber;
     private Boolean activate;
     private String address;
     private String imageName;
-    private EmployeeType employeeType;
+    private EmployeeTypeDTO employeeType;
     private DegreeDTO degree;
     private SpecializationDTO specialization;
+    private TopicDTO topic;
 	
 }

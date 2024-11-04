@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.project.backend_api.dto.StudentDTO;
+import com.project.backend_api.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,15 +39,20 @@ public class CourseController {
             String generateCourseCode = generateCourseCode(course.getCourseName());
             course.setCourseCode(generateCourseCode);
             Course existingCourse = iCourseService.saveCourse(course);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Course code already exists.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(existingCourse);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
         }
-
     }
 
     private String generateCourseCode(String courseName) {
+        // Kiểm tra xem courseName có null không
+        if (courseName == null || courseName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course name cannot be null or empty");
+        }
 
         String[] words = courseName.split(" ");
         StringBuilder code = new StringBuilder();
@@ -91,6 +98,12 @@ public class CourseController {
     public List<CourseDTO> getOpenCourses() {
         List<Course> courses = iCourseService.getOpenCourses();
         return courses.stream().map(CourseMapper::toDto).collect(Collectors.toList());
+    }
+
+    @GetMapping("/students/{id}")
+    public ResponseEntity<List<StudentDTO>> getStudentsByCourseId(@PathVariable Long id) {
+        List<StudentDTO> students = iCourseService.getStudentsByCourseId(id);
+        return ResponseEntity.ok(students);
     }
 
 }

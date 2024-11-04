@@ -37,6 +37,7 @@ public class TeachingAbilityServiceImpl implements ITeachingAbilityService{
         if (existingTeachingAbility != null){
             existingTeachingAbility.setTeachingAssignments(teachingAbility.getTeachingAssignments());
             existingTeachingAbility.setTopic(teachingAbility.getTopic());
+            existingTeachingAbility.setEmployee(teachingAbility.getEmployee());
             return teachingAbilityRepository.save(existingTeachingAbility);
         }
         return null;

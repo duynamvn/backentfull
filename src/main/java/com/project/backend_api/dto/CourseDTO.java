@@ -19,7 +19,7 @@ public class CourseDTO {
     private Integer totalStudent;
     private Boolean activate;
     private SessionDTO session;
-    private TopicDTO topics;
+    private TopicDTO topic;
     
     
 }

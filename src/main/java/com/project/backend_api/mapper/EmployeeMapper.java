@@ -46,7 +46,7 @@ public class EmployeeMapper {
 			EmployeeTypeDTO employeeTypeDTO = new EmployeeTypeDTO();
 			employeeTypeDTO.setId(employeeType.getId());
 			employeeTypeDTO.setEmployeeTypeName(employeeType.getEmployeeTypeName());
-			dto.setEmployeeType(employeeType);
+			dto.setEmployeeType(employeeTypeDTO);
 		}
 		
 		return dto;

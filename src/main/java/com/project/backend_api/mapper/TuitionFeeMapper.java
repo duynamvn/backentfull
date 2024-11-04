@@ -36,16 +36,16 @@ public class TuitionFeeMapper {
                 courseDTO.setSession(sessionDTO);
             }
             if (course.getTopic() !=null){
-                TopicDTO topicsDTO = new TopicDTO();
-                topicsDTO.setId(course.getId());
-                topicsDTO.setTopicCode(course.getCourseCode());
-                topicsDTO.setTopicName(course.getCourseName());
-                topicsDTO.setTheoryHours(course.getTotalStudent());
-                topicsDTO.setPracticalHours(course.getTotalStudent());
-                topicsDTO.setActivate(course.getActivate());
-                topicsDTO.setOriginalPrice(course.getTopic().getOriginalPrice());
-                topicsDTO.setPromotionalPrice(course.getTopic().getPromotionalPrice());
-                courseDTO.setTopics(topicsDTO);
+                TopicDTO topicDTO = new TopicDTO();
+                topicDTO.setId(course.getId());
+                topicDTO.setTopicCode(course.getCourseCode());
+                topicDTO.setTopicName(course.getCourseName());
+                topicDTO.setTheoryHours(course.getTotalStudent());
+                topicDTO.setPracticalHours(course.getTotalStudent());
+                topicDTO.setActivate(course.getActivate());
+                topicDTO.setOriginalPrice(course.getTopic().getOriginalPrice());
+                topicDTO.setPromotionalPrice(course.getTopic().getPromotionalPrice());
+                courseDTO.setTopic(topicDTO);
             }
             dto.setCourse(courseDTO);
         }

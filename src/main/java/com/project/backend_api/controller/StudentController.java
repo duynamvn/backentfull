@@ -62,6 +62,22 @@ public class StudentController {
 		iStudentService.deleteStudent(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
+	@GetMapping("/code/{studentCode}")
+	public ResponseEntity<StudentDTO> getStudentByStudentCode(@PathVariable String studentCode) {
+		Optional<Student> student = iStudentService.getStudentByStudentCode(studentCode);
+		return student.map(StudentMapper::toDTO)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.noContent().build());
+	}
+
+	@GetMapping("/name/{fullName}")
+	public ResponseEntity<List<StudentDTO>> getStudentByFullName(@PathVariable String fullName) {
+		List<Student> student = iStudentService.getStudentByFullName(fullName);
+		List<StudentDTO> studentDTO = student.stream()
+				.map(StudentMapper::toDTO)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(studentDTO);
+	}
 	
 }

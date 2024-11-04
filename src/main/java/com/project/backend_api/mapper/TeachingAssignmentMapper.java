@@ -1,10 +1,6 @@
 package com.project.backend_api.mapper;
 
-import com.project.backend_api.dto.CourseDTO;
-import com.project.backend_api.dto.EmployeeDTO;
-import com.project.backend_api.dto.SessionDTO;
-import com.project.backend_api.dto.TeachingAbilityDTO;
-import com.project.backend_api.dto.TeachingAssignmentDTO;
+import com.project.backend_api.dto.*;
 import com.project.backend_api.model.Course;
 import com.project.backend_api.model.Employee;
 import com.project.backend_api.model.TeachingAbility;
@@ -29,6 +25,15 @@ public class TeachingAssignmentMapper {
             employeeDTO.setPhoneNumber(employee.getPhoneNumber());
             employeeDTO.setActivate(employee.getActivate());
             employeeDTO.setAddress(employee.getAddress());
+            employeeDTO.setImageName(employee.getImageName());
+            dto.setEmployee(employeeDTO);
+
+            if (employee.getEmployeeType() != null) {
+                EmployeeTypeDTO employeeTypeDTO = new EmployeeTypeDTO();
+                employeeTypeDTO.setId(employee.getEmployeeType().getId());
+                employeeTypeDTO.setEmployeeTypeName(employee.getEmployeeType().getEmployeeTypeName());
+                employeeDTO.setEmployeeType(employeeTypeDTO);
+            }
             dto.setEmployee(employeeDTO);
         }
 
@@ -51,6 +56,20 @@ public class TeachingAssignmentMapper {
                 sessionDTO.setTimeSlot(course.getSession().getTimeSlot());
                 courseDTO.setSession(sessionDTO);
             }
+
+            if (course.getTopic() != null){
+                TopicDTO topicDTO = new TopicDTO();
+                topicDTO.setId(course.getId());
+                topicDTO.setTopicName(course.getTopic().getTopicName());
+                topicDTO.setTopicCode(course.getTopic().getTopicCode());
+                topicDTO.setTheoryHours(course.getTopic().getTheoryHours());
+                topicDTO.setPracticalHours(course.getTopic().getPracticalHours());
+                topicDTO.setActivate(course.getTopic().getActivate());
+                topicDTO.setOriginalPrice(course.getTopic().getOriginalPrice());
+                topicDTO.setPromotionalPrice(course.getTopic().getPromotionalPrice());
+                courseDTO.setTopic(topicDTO);
+            }
+
             dto.setCourse(courseDTO);
         }
 
@@ -58,6 +77,20 @@ public class TeachingAssignmentMapper {
         if (teachingAbility != null){
             TeachingAbilityDTO teachingAbilityDTO = new TeachingAbilityDTO();
             teachingAbilityDTO.setId(teachingAbility.getId());
+
+            if (teachingAbility.getTopic() != null){
+                TopicDTO topicDTO = new TopicDTO();
+                topicDTO.setId(teachingAbility.getId());
+                topicDTO.setTopicName(teachingAbility.getTopic().getTopicName());
+                topicDTO.setTopicCode(teachingAbility.getTopic().getTopicCode());
+                topicDTO.setTheoryHours(teachingAbility.getTopic().getTheoryHours());
+                topicDTO.setPracticalHours(teachingAbility.getTopic().getPracticalHours());
+                topicDTO.setActivate(teachingAbility.getTopic().getActivate());
+                topicDTO.setOriginalPrice(teachingAbility.getTopic().getOriginalPrice());
+                topicDTO.setPromotionalPrice(teachingAbility.getTopic().getPromotionalPrice());
+                teachingAbilityDTO.setTopic(topicDTO);
+            }
+
             dto.setTeachingAbility(teachingAbilityDTO);
         }
 

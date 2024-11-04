@@ -46,10 +46,10 @@ public class Student {
     private String phoneNumber; // Số điện thoại
 
 
-    private Boolean gender; // Giới tính (1: Nam, 0: Nữ)
+    private String gender; // Giới tính (1: Nam, 0: Nữ)
 
 	
-    @Column(unique = true)
+    @Column(name = "national_id", unique = true)
     private String nationalID; // Số chứng minh nhân dân
 
     @Email(message = "Email should be valid")
@@ -78,9 +78,5 @@ public class Student {
     @JsonManagedReference(value = "attendStudent")
     private List<Attendance> attendances; // Danh sách attendance của sinh viên
 
-    // Thiết lập quan hệ 1:n với Image
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "student_images")
-    private List<Image> images; // Danh sách hình ảnh của sinh viên
 
 }

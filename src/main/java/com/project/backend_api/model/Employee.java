@@ -39,7 +39,7 @@ public class Employee {
     private LocalDate dateOfBirth; // Ngày sinh
 
     @Column(name = "gender")
-    private Boolean gender; // Giới tính (1: Nam, 0: Nữ)
+    private String gender; // Giới tính (1: Nam, 0: Nữ)
 
     @Column(name = "national_id")
     private String nationalID; // Số chứng minh nhân dân
@@ -66,10 +66,7 @@ public class Employee {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference(value = "empTeach")
     private List<TeachingAbility> teachingAbilities;
-    
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "emp_images")
-    private List<Image> images;
+
     
     @ManyToOne
     @JoinColumn(name = "degree_id")
@@ -78,7 +75,7 @@ public class Employee {
     
     // Mối quan hệ n:1 với EmployeeType
     @ManyToOne
-    @JoinColumn(name = "employee_type_id", nullable = false)
+    @JoinColumn(name = "employee_type_id")
     @JsonBackReference(value = "emp_type")
     private EmployeeType employeeType; // Kiểu nhân viên
     

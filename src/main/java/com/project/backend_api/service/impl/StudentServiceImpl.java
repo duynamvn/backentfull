@@ -38,6 +38,13 @@ public class StudentServiceImpl implements IStudentService{
 	public Student updateStudent(Long id, Student student) {
 		// TODO Auto-generated method stub
 		Student existingStudent = studentRepository.findById(id).orElseThrow();
+
+		// Kiểm tra nếu email mới đã tồn tại cho một học viên khác
+		Optional<Student> studentWithSameEmail = studentRepository.findByEmail(student.getEmail());
+		if (studentWithSameEmail.isPresent() && !studentWithSameEmail.get().getId().equals(id)) {
+			throw new IllegalArgumentException("Email already exists");
+		}
+
 		existingStudent.setFullName(student.getFullName());
 		existingStudent.setDateOfBirth(student.getDateOfBirth());
 		existingStudent.setAddress(student.getAddress());
@@ -56,5 +63,16 @@ public class StudentServiceImpl implements IStudentService{
 	@Override
 	public void deleteStudent(Long id) {
 		studentRepository.deleteById(id);
+	}
+
+	@Override
+	public Optional<Student> getStudentByStudentCode(String studentCode) {
+		return studentRepository.findByStudentCode(studentCode);
+	}
+
+	@Override
+	public List<Student> getStudentByFullName(String fullName) {
+		System.out.println("Searching for name containing: " + fullName);
+		return studentRepository.findStudentByFullName(fullName);
 	}
 }

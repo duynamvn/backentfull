@@ -3,7 +3,11 @@ package com.project.backend_api.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.project.backend_api.dto.StudentDTO;
+import com.project.backend_api.mapper.StudentMapper;
+import com.project.backend_api.model.TuitionFee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,6 +87,15 @@ public class CourseServiceImpl implements ICourseService{
     public List<Course> getOpenCourses() {
         LocalDate currentDate = LocalDate.now();
         return courseRepository.findOpenCourses(currentDate);
+    }
+
+    @Override
+    public List<StudentDTO> getStudentsByCourseId(Long courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found with id: " + courseId));
+        return course.getTuitionFees().stream()
+                .map(TuitionFee::getStudent)
+                .map(StudentMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
 }

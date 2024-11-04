@@ -30,16 +30,16 @@ public class CourseMapper {
 
         Topic topics = course.getTopic();
         if (topics != null){
-            TopicDTO topicsDTO = new TopicDTO();
-            topicsDTO.setId(topics.getId());
-            topicsDTO.setTopicCode(topics.getTopicCode());
-            topicsDTO.setTopicName(topics.getTopicName());
-            topicsDTO.setTheoryHours(topics.getTheoryHours());
-            topicsDTO.setPracticalHours(topics.getPracticalHours());
-            topicsDTO.setActivate(topics.getActivate());
-            topicsDTO.setOriginalPrice(topics.getOriginalPrice());
-            topicsDTO.setPromotionalPrice(topics.getPromotionalPrice());
-            dto.setTopics(topicsDTO);
+            TopicDTO topicDTO = new TopicDTO();
+            topicDTO.setId(topics.getId());
+            topicDTO.setTopicCode(topics.getTopicCode());
+            topicDTO.setTopicName(topics.getTopicName());
+            topicDTO.setTheoryHours(topics.getTheoryHours());
+            topicDTO.setPracticalHours(topics.getPracticalHours());
+            topicDTO.setActivate(topics.getActivate());
+            topicDTO.setOriginalPrice(topics.getOriginalPrice());
+            topicDTO.setPromotionalPrice(topics.getPromotionalPrice());
+            dto.setTopic(topicDTO);
         }
         return dto;
     }
