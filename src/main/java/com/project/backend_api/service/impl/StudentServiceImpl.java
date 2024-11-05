@@ -71,6 +71,12 @@ public class StudentServiceImpl implements IStudentService{
 	}
 
 	@Override
+	public Long getLatestStudentId() {
+		List<Student> students = studentRepository.findTopStudentsOrderByIdDesc();
+		return students.isEmpty() ? null : students.get(0).getId();
+	}
+
+	@Override
 	public Optional<Student> getStudentByStudentCode(String studentCode) {
 		return studentRepository.findByStudentCode(studentCode);
 	}

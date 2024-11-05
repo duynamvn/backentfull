@@ -57,7 +57,6 @@ public class CourseServiceImpl implements ICourseService{
         if (course.getTopic() != null && course.getTopic().getId() != null) {
         	existingCourse.setTopic(course.getTopic());
         }
-
         return courseRepository.save(existingCourse);
     }
 

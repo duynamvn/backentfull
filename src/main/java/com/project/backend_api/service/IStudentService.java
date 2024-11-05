@@ -13,6 +13,7 @@ public interface IStudentService {
 	Student updateStudent(Long id, Student student);
 	void deleteStudent(Long id);
 
+	Long getLatestStudentId();
 	Optional<Student> getStudentByStudentCode(String studentCode);
 	List<Student> getStudentByFullName(String fullName);
 }

@@ -32,7 +32,7 @@ public class CourseController {
     @Autowired
     private ICourseService iCourseService;
 
-    // Thêm Course mới
+
     @PostMapping
     public ResponseEntity<?> createCourse(@RequestBody Course course) {
         try {
@@ -68,8 +68,28 @@ public class CourseController {
 
     // Cập nhật Course theo ID
     @PutMapping("/{id}")
-    public Course updateCourse(@PathVariable Long id, @RequestBody Course courseDetails) {
-        return iCourseService.updateCourse(id, courseDetails);
+    public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody Course courseDetails) {
+        try {
+            Course existingCourse = iCourseService.getCourseById(id)
+                    .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+            // Kiểm tra nếu tên khóa học bị thay đổi
+            if (!existingCourse.getCourseName().equals(courseDetails.getCourseName())) {
+                // Tạo mã khóa học mới
+                String newCourseCode = generateCourseCode(courseDetails.getCourseName());
+                courseDetails.setCourseCode(newCourseCode);
+            } else {
+                // Giữ nguyên mã khóa học hiện tại
+                courseDetails.setCourseCode(existingCourse.getCourseCode());
+            }
+
+            // Cập nhật các trường khác
+            courseDetails.setId(existingCourse.getId()); // Đảm bảo đặt ID cho bản ghi cần cập nhật
+            Course updateCourse = iCourseService.updateCourse(id, courseDetails);
+            return ResponseEntity.ok(updateCourse);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
+        }
     }
 
     // Lấy Course theo ID
