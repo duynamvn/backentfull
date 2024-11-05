@@ -27,26 +27,19 @@ public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(name = "topic_code")
+
     private String topicCode;
-    
-    @Column(name = "topic_name")
+
     private String topicName;
-    
-    @Column(name = "theory_hours")
+
     private Integer theoryHours;
-    
-    @Column(name = "practical_hours")
+
     private Integer practicalHours;
-    
-    @Column(name = "activate")
+
     private Boolean activate;
-    
-    @Column(name = "original_price")
+
     private  double originalPrice;
-    
-    @Column(name = "promotional_price")
+
     private double PromotionalPrice;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -25,7 +25,6 @@ public class TeachingAssignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "activate")
     private Boolean activate;
 
     @ManyToOne

@@ -27,7 +27,6 @@ public class StudentType {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "student_type_name")
 	private String studentTypeName;
 	
 	// Thiết lập mối quan hệ 1:n với Student
@@ -35,29 +34,4 @@ public class StudentType {
 	@JsonManagedReference(value = "student_type")
 	private List<Student> students;	// Danh sách sinh viên thuộc danh mục này
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getStudentTypeName() {
-		return studentTypeName;
-	}
-
-	public void setStudentTypeName(String studentTypeName) {
-		this.studentTypeName = studentTypeName;
-	}
-
-	public List<Student> getStudents() {
-		return students;
-	}
-
-	public void setStudents(List<Student> students) {
-		this.students = students;
-	}
-	
-	
 }

@@ -45,6 +45,11 @@ public class StudentServiceImpl implements IStudentService{
 			throw new IllegalArgumentException("Email already exists");
 		}
 
+		Optional<Student> studentWithSamNationalId = studentRepository.findByNationalID(student.getNationalID());
+		if (studentWithSamNationalId.isPresent() && !studentWithSamNationalId.get().getId().equals(id)) {
+			throw new IllegalArgumentException("National ID already exists");
+		}
+
 		existingStudent.setFullName(student.getFullName());
 		existingStudent.setDateOfBirth(student.getDateOfBirth());
 		existingStudent.setAddress(student.getAddress());

@@ -32,22 +32,16 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "course_code")
     private String courseCode;
 
-    @Column(name = "course_name")
     private String courseName;
 
-    @Column(name = "start_date")
     private LocalDate startDate;
 
-    @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "total_student")
     private Integer totalStudent;
 
-    @Column(name = "activate")
     private Boolean activate;
 
     // Mối quan hệ 1:N với TeachingAssignment

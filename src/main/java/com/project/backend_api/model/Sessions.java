@@ -29,10 +29,8 @@ public class Sessions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "time_slot")
     private LocalTime timeSlot;
 
-    @Column(name = "session_name")
     private String sessionName;
 
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -34,22 +34,31 @@ public class EmployeeServiceImpl implements IEmployeeService{
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
         Employee existingEmployee = employeeRepository.findById(id).orElseThrow(null);
-        if(existingEmployee != null){
-            existingEmployee.setFullName(employee.getFullName());
-            existingEmployee.setDateOfBirth(employee.getDateOfBirth());
-            existingEmployee.setGender(employee.getGender());
-            existingEmployee.setNationalID(employee.getNationalID());
-            existingEmployee.setEmail(employee.getEmail());
-            existingEmployee.setPhoneNumber(employee.getPhoneNumber());
-            existingEmployee.setActivate(employee.getActivate());
-            existingEmployee.setAddress(employee.getAddress());
-            existingEmployee.setImageName(employee.getImageName());
-            
-            existingEmployee.setDegree(employee.getDegree());
-            existingEmployee.setSpecialization(employee.getSpecialization());
-            return employeeRepository.save(existingEmployee);
+
+        Optional<Employee> employeeWithSameEmail = employeeRepository.findByEmail(employee.getEmail());
+        if (employeeWithSameEmail.isPresent() && !employeeWithSameEmail.get().getId().equals(id)) {
+            throw new IllegalArgumentException("Email already exists");
         }
-        return null;
+
+        Optional<Employee> employeeWithSameNationalId = employeeRepository.findByNationalID(employee.getNationalID());
+        if (employeeWithSameNationalId.isPresent() && !employeeWithSameNationalId.get().getId().equals(id)) {
+            throw new IllegalArgumentException("National ID already exists");
+        }
+
+        existingEmployee.setFullName(employee.getFullName());
+        existingEmployee.setDateOfBirth(employee.getDateOfBirth());
+        existingEmployee.setGender(employee.getGender());
+        existingEmployee.setNationalID(employee.getNationalID());
+        existingEmployee.setEmail(employee.getEmail());
+        existingEmployee.setPhoneNumber(employee.getPhoneNumber());
+        existingEmployee.setActivate(employee.getActivate());
+        existingEmployee.setAddress(employee.getAddress());
+        existingEmployee.setImageName(employee.getImageName());
+
+        existingEmployee.setDegree(employee.getDegree());
+        existingEmployee.setSpecialization(employee.getSpecialization());
+
+        return employeeRepository.save(existingEmployee);
     }
 
     @Override

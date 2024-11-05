@@ -18,6 +18,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,14 +44,17 @@ public class Student {
 
     private String address; // Địa chỉ
 
-
+    @Size(min = 10, max = 10, message = "PhoneNumber phải có đủ 10 chữ số")
+    @Pattern(regexp = "^(03|05|07|08|09)\\d{8}$", message = "PhoneNumber phải bắt đầu bằng 03|05|07|08|09 và có đủ 10 chữ số")
     private String phoneNumber; // Số điện thoại
 
 
-    private String gender; // Giới tính (1: Nam, 0: Nữ)
+    private String gender;
 
 	
     @Column(name = "national_id", unique = true)
+    @Size(min = 12, max = 12, message = "NationalID phải có đủ 12 chữ số")
+    @Pattern(regexp = "\\d{12}", message = "NationalID chỉ đươc chứa các chữ số")
     private String nationalID; // Số chứng minh nhân dân
 
     @Email(message = "Email should be valid")

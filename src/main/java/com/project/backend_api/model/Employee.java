@@ -17,6 +17,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,28 +35,27 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name")
     private String fullName; // Họ và tên
 
-    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth; // Ngày sinh
 
-    @Column(name = "gender")
     private String gender; // Giới tính (1: Nam, 0: Nữ)
 
-    @Column(name = "national_id")
+    @Column(name = "national_id", unique = true)
+    @Size(min = 12, max = 12, message = "NationalID phải có đủ 12 chữ số")
+    @Pattern(regexp = "\\d{12}", message = "NationalID chỉ được chứa các chữ số")
     private String nationalID; // Số chứng minh nhân dân
 
-    @Column(name = "email")
-    private String email; // Email
+    @Column(unique = true)
+    @Email(message = "Email should be valid")
+    private String email;
 
-    @Column(name = "phone_number")
-    private String phoneNumber; // Số điện thoại
+    @Size(min = 10, max = 10, message = "PhoneNumber phải có đủ 10 chữ số")
+    @Pattern(regexp = "^(03|05|07|08|09)\\d{8}$", message = "PhoneNumber phải bắt đầu bằng 03|05|07|08|09 và có đủ 10 chữ số")
+    private String phoneNumber;
 
-    @Column(name = "activate")
-    private Boolean activate; // Trạng thái kích hoạt (1: Kích hoạt, 0: Không kích hoạt)
+    private Boolean activate;
 
-    @Column(name = "address")
     private String address;
 
     private String imageName;

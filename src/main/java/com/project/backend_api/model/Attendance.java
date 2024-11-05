@@ -27,10 +27,8 @@ public class Attendance {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "date_of_recognition")
 	private LocalDate dateOfRecognition;
 
-	@Column(name = "note")
 	private String note;
 	
 	@ManyToOne
