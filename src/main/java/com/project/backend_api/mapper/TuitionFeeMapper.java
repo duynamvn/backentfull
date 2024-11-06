@@ -49,6 +49,11 @@ public class TuitionFeeMapper {
             }
             dto.setCourse(courseDTO);
         }
+        if (tuitionFee.getCourse() != null && tuitionFee.getCourse().getTopic() != null){
+            dto.setOriginalPrice(tuitionFee.getCourse().getTopic().getOriginalPrice());
+            dto.setPromotionalPrice(tuitionFee.getCourse().getTopic().getPromotionalPrice());
+        }
+
         return dto;
     }
 }

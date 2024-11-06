@@ -67,5 +67,4 @@ public class Course {
     @JsonManagedReference(value = "tuitionCourse")
     private List<TuitionFee> tuitionFees;
 
-
 }
