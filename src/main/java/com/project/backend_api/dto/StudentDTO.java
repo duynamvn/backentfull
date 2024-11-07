@@ -35,4 +35,6 @@ public class StudentDTO {
     
     private StudentTypeDTO studentType;
 
+    private Boolean collectedMoney;
+
 }

@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,6 @@ import com.project.backend_api.mapper.TeachingAssignmentMapper;
 import com.project.backend_api.model.TeachingAssignment;
 import com.project.backend_api.service.ITeachingAssignmentService;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/teaching-assignment")
 public class TeachingAssignmentController {
@@ -43,13 +44,23 @@ public class TeachingAssignmentController {
     }
 
     @PostMapping
-    public TeachingAssignment createTeachingAssignment(@RequestBody TeachingAssignment teachingAssignment) {
-        return iTeachingAssignmentService.saveTeachingAssignment(teachingAssignment);
+    public ResponseEntity<?> createTeachingAssignment(@RequestBody TeachingAssignment teachingAssignment) {
+        try {
+            TeachingAssignment savedAssignment = iTeachingAssignmentService.saveTeachingAssignment(teachingAssignment);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedAssignment);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating teaching assignment: " + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public TeachingAssignment updateTeachingAssignment(@PathVariable Long id, @RequestBody TeachingAssignment teachingAssignment) {
-        return iTeachingAssignmentService.updateTeachingAssignment(id, teachingAssignment);
+    public ResponseEntity<?> updateTeachingAssignment(@PathVariable Long id, @RequestBody TeachingAssignment teachingAssignment) {
+        try {
+            TeachingAssignment updatedAssignment = iTeachingAssignmentService.updateTeachingAssignment(id, teachingAssignment);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedAssignment);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error updating teaching assignment: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

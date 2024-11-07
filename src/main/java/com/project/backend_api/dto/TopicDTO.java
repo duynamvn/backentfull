@@ -16,7 +16,7 @@ public class TopicDTO {
     private Integer practicalHours;
     private Boolean activate;
     private double originalPrice;
-    private double PromotionalPrice;
+    private double promotionalPrice;
     
 	
 }

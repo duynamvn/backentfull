@@ -4,6 +4,7 @@ import com.project.backend_api.dto.StudentDTO;
 import com.project.backend_api.dto.StudentTypeDTO;
 import com.project.backend_api.model.Student;
 import com.project.backend_api.model.StudentType;
+import com.project.backend_api.model.TuitionFee;
 
 public class StudentMapper {
 
@@ -28,7 +29,10 @@ public class StudentMapper {
 			studentTypeDTO.setStudentTypeName(studentType.getStudentTypeName());
 			dto.setStudentType(studentTypeDTO);
 		}
-		
+		if (student.getTuitionFees() != null && !student.getTuitionFees().isEmpty()) {
+			TuitionFee tuitionFee = student.getTuitionFees().get(0);
+			dto.setCollectedMoney(tuitionFee.getCollectedMoney());
+		}
 		
 		return dto;
 	}

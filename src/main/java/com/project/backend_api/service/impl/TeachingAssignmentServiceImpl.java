@@ -3,6 +3,7 @@ package com.project.backend_api.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +34,18 @@ public class TeachingAssignmentServiceImpl implements ITeachingAssignmentService
 
     @Override
     public TeachingAssignment updateTeachingAssignment(Long id, TeachingAssignment teachingAssignment) {
-        TeachingAssignment existingTeachingAssignment = teachingAssignmentRepository.findById(id).orElseThrow(null);
-        if (existingTeachingAssignment != null){
-            existingTeachingAssignment.setActivate(teachingAssignment.getActivate());
-            existingTeachingAssignment.setEmployee(teachingAssignment.getEmployee());
-            existingTeachingAssignment.setCourse(teachingAssignment.getCourse());
-            existingTeachingAssignment.setTeachingAbility(teachingAssignment.getTeachingAbility());
-            return teachingAssignmentRepository.save(existingTeachingAssignment);
+        Optional<TeachingAssignment> existingAssignment = teachingAssignmentRepository.findById(id);
+        if (existingAssignment.isPresent()) {
+            TeachingAssignment updatedAssignment = existingAssignment.get();
+            // Cập nhật các trường cần thiết
+            updatedAssignment.setActivate(teachingAssignment.getActivate());
+            updatedAssignment.setEmployee(teachingAssignment.getEmployee());
+            updatedAssignment.setCourse(teachingAssignment.getCourse());
+            updatedAssignment.setTeachingAbility(teachingAssignment.getTeachingAbility());
+            return teachingAssignmentRepository.save(updatedAssignment);
+        } else {
+            throw new EntityNotFoundException("Không tìm thấy phân công giảng dạy với ID: " + id);
         }
-        return null;
     }
 
     @Override
