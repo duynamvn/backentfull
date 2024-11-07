@@ -28,6 +28,18 @@ public class EmployeeServiceImpl implements IEmployeeService{
 
     @Override
     public Employee saveEmployee(Employee employee) {
+        Optional<Employee> employeeWithSameEmail = employeeRepository.findByEmail(employee.getEmail());
+        if (employeeWithSameEmail.isPresent()) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+        Optional<Employee> employeeWithSameNationalId = employeeRepository.findByNationalID(employee.getNationalID());
+        if (employeeWithSameNationalId.isPresent()) {
+            throw new IllegalArgumentException("National ID already exists");
+        }
+        Optional<Employee> employeeWithSamePhoneNumber = employeeRepository.findByPhoneNumber(employee.getPhoneNumber());
+        if (employeeWithSamePhoneNumber.isPresent()) {
+            throw new IllegalArgumentException("Phone number already exists");
+        }
         return employeeRepository.save(employee);
     }
 
@@ -43,6 +55,10 @@ public class EmployeeServiceImpl implements IEmployeeService{
         Optional<Employee> employeeWithSameNationalId = employeeRepository.findByNationalID(employee.getNationalID());
         if (employeeWithSameNationalId.isPresent() && !employeeWithSameNationalId.get().getId().equals(id)) {
             throw new IllegalArgumentException("National ID already exists");
+        }
+        Optional<Employee> employeeWithSamePhoneNumber = employeeRepository.findByPhoneNumber(employee.getPhoneNumber());
+        if (employeeWithSamePhoneNumber.isPresent() && !employeeWithSamePhoneNumber.get().getId().equals(id)) {
+            throw new IllegalArgumentException("Phone Number already exists");
         }
 
         existingEmployee.setFullName(employee.getFullName());

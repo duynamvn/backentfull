@@ -31,6 +31,18 @@ public class StudentServiceImpl implements IStudentService{
 	@Override
 	public Student createStudent(Student student) {
 		// TODO Auto-generated method stub
+		Optional<Student> studentWithSamePhoneNumber = studentRepository.findStudentByPhoneNumber(student.getPhoneNumber());
+		if (studentWithSamePhoneNumber.isPresent()) {
+			throw new IllegalArgumentException("Phone number already in use");
+		}
+		Optional<Student> studentWithSameEmail = studentRepository.findByEmail(student.getEmail());
+		if (studentWithSameEmail.isPresent()) {
+			throw new IllegalArgumentException("Email already in use");
+		}
+		Optional<Student> studentWithSameNationalID = studentRepository.findByNationalID(student.getNationalID());
+		if (studentWithSameNationalID.isPresent()) {
+			throw new IllegalArgumentException("National ID already in use");
+		}
 		return studentRepository.save(student);
 	}
 
@@ -45,9 +57,14 @@ public class StudentServiceImpl implements IStudentService{
 			throw new IllegalArgumentException("Email already exists");
 		}
 
-		Optional<Student> studentWithSamNationalId = studentRepository.findByNationalID(student.getNationalID());
-		if (studentWithSamNationalId.isPresent() && !studentWithSamNationalId.get().getId().equals(id)) {
+		Optional<Student> studentWithSameNationalId = studentRepository.findByNationalID(student.getNationalID());
+		if (studentWithSameNationalId.isPresent() && !studentWithSameNationalId.get().getId().equals(id)) {
 			throw new IllegalArgumentException("National ID already exists");
+		}
+
+		Optional<Student> studentWithSamePhoneNumber = studentRepository.findStudentByPhoneNumber(student.getPhoneNumber());
+		if (studentWithSamePhoneNumber.isPresent() && !studentWithSamePhoneNumber.get().getId().equals(id)) {
+			throw new IllegalArgumentException("Phone Number already exists");
 		}
 
 		existingStudent.setFullName(student.getFullName());
