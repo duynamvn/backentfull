@@ -3,6 +3,7 @@ package com.project.backend_api.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import com.project.backend_api.model.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,4 +54,9 @@ public class TopicServiceImpl implements ITopicService{
         topicRepository.deleteById(id);
     }
 
+    @Override
+    public Long getLatestTopicId() {
+        List<Topic> topics = topicRepository.findTopTopicOrderByIdDesc();
+        return topics.isEmpty() ? null : topics.get(0).getId();
+    }
 }

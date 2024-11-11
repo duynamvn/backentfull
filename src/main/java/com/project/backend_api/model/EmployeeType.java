@@ -33,4 +33,8 @@ public class EmployeeType {
     @OneToMany(mappedBy = "employeeType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference(value = "emp_type")
     private List<Employee> employees;
+
+	public EmployeeType(Long id){
+		this.id = id;
+	}
 }

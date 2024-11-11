@@ -32,4 +32,8 @@ public class Specialization {
 	@OneToMany(mappedBy = "specialization", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference(value = "spec_emp")
 	private List<Employee> employees;
+
+	public Specialization(Long id){
+		this.id = id;
+	}
 }

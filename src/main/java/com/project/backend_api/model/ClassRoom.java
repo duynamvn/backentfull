@@ -36,37 +36,9 @@ public class ClassRoom {
     @JsonManagedReference(value = "scheduleRoom")
     private List<ClassSchedule> classSchedules;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
+	// Constructor nhận tham số Long cho ID
+	public ClassRoom(Long id) {
 		this.id = id;
 	}
 
-	public String getRoomName() {
-		return roomName;
-	}
-
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public List<ClassSchedule> getClassSchedules() {
-		return classSchedules;
-	}
-
-	public void setClassSchedules(List<ClassSchedule> classSchedules) {
-		this.classSchedules = classSchedules;
-	}
-    
-    
 }

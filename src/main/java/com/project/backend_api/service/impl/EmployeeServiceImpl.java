@@ -28,7 +28,11 @@ public class EmployeeServiceImpl implements IEmployeeService{
 
     @Override
     public Employee saveEmployee(Employee employee) {
+
         Optional<Employee> employeeWithSameEmail = employeeRepository.findByEmail(employee.getEmail());
+        if (employee.getEmployeeType() == null) {
+            throw new IllegalArgumentException("Employee type is required");
+        }
         if (employeeWithSameEmail.isPresent()) {
             throw new IllegalArgumentException("Email already exists");
         }
@@ -40,12 +44,18 @@ public class EmployeeServiceImpl implements IEmployeeService{
         if (employeeWithSamePhoneNumber.isPresent()) {
             throw new IllegalArgumentException("Phone number already exists");
         }
+
         return employeeRepository.save(employee);
     }
 
     @Override
     public Employee updateEmployee(Long id, Employee employee) {
-        Employee existingEmployee = employeeRepository.findById(id).orElseThrow(null);
+        Employee existingEmployee = employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+
+        if (employee.getEmployeeType() == null) {
+            throw new IllegalArgumentException("Employee type is required");
+        }
 
         Optional<Employee> employeeWithSameEmail = employeeRepository.findByEmail(employee.getEmail());
         if (employeeWithSameEmail.isPresent() && !employeeWithSameEmail.get().getId().equals(id)) {
@@ -73,6 +83,7 @@ public class EmployeeServiceImpl implements IEmployeeService{
 
         existingEmployee.setDegree(employee.getDegree());
         existingEmployee.setSpecialization(employee.getSpecialization());
+        existingEmployee.setEmployeeType(employee.getEmployeeType());
 
         return employeeRepository.save(existingEmployee);
     }

@@ -47,4 +47,7 @@ public class TuitionFee {
     @JsonBackReference(value = "student_tuition")
     private Student student;
 
+    public TuitionFee(Long id){
+        this.id = id;
+    }
 }

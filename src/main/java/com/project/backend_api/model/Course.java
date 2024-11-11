@@ -67,4 +67,7 @@ public class Course {
     @JsonManagedReference(value = "tuitionCourse")
     private List<TuitionFee> tuitionFees;
 
+    public Course(Long id) {
+        this.id = id;
+    }
 }

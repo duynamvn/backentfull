@@ -26,4 +26,5 @@ public class EmployeeDTO {
     private EmployeeTypeDTO employeeType;
     private DegreeDTO degree;
     private SpecializationDTO specialization;
+
 }

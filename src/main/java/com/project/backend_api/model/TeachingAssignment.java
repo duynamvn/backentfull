@@ -43,5 +43,7 @@ public class TeachingAssignment {
     @JsonBackReference(value = "assign_ability")
     private TeachingAbility teachingAbility; // Môn học được phân công giảng dạy
 
-
+    public TeachingAssignment(Long id){
+        this.id = id;
+    }
 }

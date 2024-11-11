@@ -34,4 +34,8 @@ public class Degree {
 	@OneToMany(mappedBy = "degree", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Mối quan hệ 1:N với Employee
 	@JsonManagedReference(value = "emp_degree")
 	private List<Employee> employees; // Danh sách nhân viên
+
+	public Degree(Long id){
+		this.id = id;
+	}
 }

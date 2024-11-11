@@ -37,37 +37,7 @@ public class Sessions {
     @JsonManagedReference(value = "sessionCourse") // Chỉ định back-reference tại đây
     private List<Course> courses;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
+	public Sessions(Long id){
 		this.id = id;
 	}
-
-	public LocalTime getTimeSlot() {
-		return timeSlot;
-	}
-
-	public void setTimeSlot(LocalTime timeSlot) {
-		this.timeSlot = timeSlot;
-	}
-
-	public String getSessionName() {
-		return sessionName;
-	}
-
-	public void setSessionName(String sessionName) {
-		this.sessionName = sessionName;
-	}
-
-	public List<Course> getCourses() {
-		return courses;
-	}
-
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
-	}
-
-    
 }

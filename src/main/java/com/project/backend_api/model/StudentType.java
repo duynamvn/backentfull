@@ -34,4 +34,7 @@ public class StudentType {
 	@JsonManagedReference(value = "student_type")
 	private List<Student> students;	// Danh sách sinh viên thuộc danh mục này
 
+	public StudentType(Long id){
+		this.id = id;
+	}
 }

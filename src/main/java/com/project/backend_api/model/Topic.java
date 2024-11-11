@@ -50,4 +50,7 @@ public class Topic {
     @JsonManagedReference(value = "topicCourse")
     private List<Course> courses;
 
+    public Topic(Long id){
+        this.id = id;
+    }
 }

@@ -83,5 +83,7 @@ public class Student {
     @JsonManagedReference(value = "attendStudent")
     private List<Attendance> attendances; // Danh sách attendance của sinh viên
 
-
+    public Student(Long id){
+        this.id = id;
+    }
 }

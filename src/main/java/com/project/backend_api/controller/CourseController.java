@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.project.backend_api.dto.StudentDTO;
 import com.project.backend_api.model.Student;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ import com.project.backend_api.mapper.CourseMapper;
 import com.project.backend_api.model.Course;
 import com.project.backend_api.service.ICourseService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@Slf4j
 @RestController
 @RequestMapping("/api/courses")
 public class CourseController {
@@ -41,9 +42,10 @@ public class CourseController {
             Course existingCourse = iCourseService.saveCourse(course);
             return ResponseEntity.status(HttpStatus.CREATED).body(existingCourse);
         } catch (IllegalArgumentException e) {
+            log.error("Invalid course data: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error occurred while creating course: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
         }
     }
@@ -70,6 +72,7 @@ public class CourseController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody Course courseDetails) {
         try {
+            log.info("Updating course with id: {}", id);
             Course existingCourse = iCourseService.getCourseById(id)
                     .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
             // Kiểm tra nếu tên khóa học bị thay đổi
@@ -77,17 +80,20 @@ public class CourseController {
                 // Tạo mã khóa học mới
                 String newCourseCode = generateCourseCode(courseDetails.getCourseName());
                 courseDetails.setCourseCode(newCourseCode);
+                log.info("Course name changed. New course code generated: {}", newCourseCode);
             } else {
                 // Giữ nguyên mã khóa học hiện tại
                 courseDetails.setCourseCode(existingCourse.getCourseCode());
+                log.info("Course name not changed. Retaining current course code: {}", existingCourse.getCourseCode());
             }
 
             // Cập nhật các trường khác
             courseDetails.setId(existingCourse.getId()); // Đảm bảo đặt ID cho bản ghi cần cập nhật
             Course updateCourse = iCourseService.updateCourse(id, courseDetails);
+            log.info("Course with ID: {} updated successfully", id);
             return ResponseEntity.ok(updateCourse);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error occurred while updating course with ID: {}", id, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
         }
     }
@@ -95,14 +101,23 @@ public class CourseController {
     // Lấy Course theo ID
     @GetMapping("/{id}")
     public CourseDTO getCourseById(@PathVariable Long id) {
+        log.info("Fetching course with id: {}", id);
         Optional<Course> course = iCourseService.getCourseById(id);
-        return course.map(CourseMapper::toDto).orElse(null);
+        if (course.isPresent()) {
+            log.info("Found course with id: {}", id);
+            return CourseMapper.toDto(course.get());
+        } else{
+            log.warn("Course with id: {} not found", id);
+            return null;
+        }
     }
 
     // Lấy tất cả các Course
     @GetMapping
     public List<CourseDTO>  getAllCourses() {
+        log.info("Fetching all courses");
         List<Course> courses = iCourseService.getAllCourses();
+        log.info("Found {} courses", courses.size());
         return courses.stream()
                 .map(CourseMapper::toDto)
                 .collect(Collectors.toList());
@@ -111,19 +126,32 @@ public class CourseController {
     // Xóa Course theo ID
     @DeleteMapping("/{id}")
     public void deleteCourse(@PathVariable Long id) {
+        log.info("Deleting course with id: {}", id);
         iCourseService.deleteCourse(id);
+        log.info("Course with id: {} deleted successfully", id);
     }
 
     @GetMapping("/open")
     public List<CourseDTO> getOpenCourses() {
+        log.info("Fetching all open courses");
         List<Course> courses = iCourseService.getOpenCourses();
+        log.info("Found {} open courses", courses.size());
         return courses.stream().map(CourseMapper::toDto).collect(Collectors.toList());
     }
 
     @GetMapping("/students/{id}")
     public ResponseEntity<List<StudentDTO>> getStudentsByCourseId(@PathVariable Long id) {
+        log.info("Fetching students with id: {}", id);
         List<StudentDTO> students = iCourseService.getStudentsByCourseId(id);
+        log.info("Found {} students", students.size());
         return ResponseEntity.ok(students);
+    }
+    @GetMapping("/close")
+    public List<CourseDTO> getCloseCourses() {
+        log.info("Fetching close courses");
+        List<Course> courses = iCourseService.getClosedCourses();
+        log.info("Found {} closed courses", courses.size());
+        return courses.stream().map(CourseMapper::toDto).collect(Collectors.toList());
     }
 
 }

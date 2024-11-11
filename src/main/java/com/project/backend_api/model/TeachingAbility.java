@@ -44,5 +44,8 @@ public class TeachingAbility {
     @JoinColumn(name = "employee_id")
     @JsonBackReference(value = "empTeach")
     private Employee employee;
- 
+
+    public TeachingAbility(Long id){
+        this.id = id;
+    }
 }

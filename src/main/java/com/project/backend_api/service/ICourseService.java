@@ -17,4 +17,5 @@ public interface ICourseService {
 
     List<Course> getOpenCourses(); // Những khóa học đang mở
     List<StudentDTO> getStudentsByCourseId(Long courseId); // Tìm danh sách học viên theo khóa học
+    List<Course> getClosedCourses();
 }

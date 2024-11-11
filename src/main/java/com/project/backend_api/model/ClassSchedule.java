@@ -39,7 +39,7 @@ public class ClassSchedule {
 
     private LocalTime endTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "classroom_id")
     @JsonBackReference(value = "scheduleRoom")
     private ClassRoom classRoom;
@@ -53,52 +53,5 @@ public class ClassSchedule {
 	@JsonManagedReference(value = "attendClass")
 	private List<Attendance> attendances;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public LocalDate getClassDate() {
-		return classDate;
-	}
-
-	public void setClassDate(LocalDate classDate) {
-		this.classDate = classDate;
-	}
-
-	public LocalTime getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(LocalTime startTime) {
-		this.startTime = startTime;
-	}
-
-	public LocalTime getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(LocalTime endTime) {
-		this.endTime = endTime;
-	}
-
-	public ClassRoom getClassRoom() {
-		return classRoom;
-	}
-
-	public void setClassRoom(ClassRoom classRoom) {
-		this.classRoom = classRoom;
-	}
-
-	public Course getCourse() {
-		return course;
-	}
-
-	public void setCourse(Course course) {
-		this.course = course;
-	}
     
 }

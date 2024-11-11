@@ -86,4 +86,7 @@ public class Employee {
     @JsonBackReference(value = "spec_emp")
     private Specialization specialization;
 
+    public Employee(Long id){
+        this.id = id;
+    }
 }

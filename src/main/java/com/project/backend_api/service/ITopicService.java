@@ -16,4 +16,6 @@ public interface ITopicService {
 	Topic updateTopic(Long id, Topic topic);
 
 	void deleteTopic(Long id);
+
+	Long getLatestTopicId();
 }

@@ -37,10 +37,11 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
         Employee employee = iEmployeeService.getEmployeeById(id)
-                                            .orElseThrow(() -> new RuntimeException("Employee not found"));
-        return ResponseEntity.ok(employee);
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        EmployeeDTO employeeDTO = EmployeeMapper.toDto(employee);
+        return ResponseEntity.ok(employeeDTO);
     }
 
     @PostMapping
