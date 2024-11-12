@@ -1,9 +1,11 @@
 package com.project.backend_api.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.project.backend_api.dto.CourseDateDTO;
 import com.project.backend_api.dto.StudentDTO;
 import com.project.backend_api.model.Student;
 import lombok.extern.slf4j.Slf4j;
@@ -154,4 +156,18 @@ public class CourseController {
         return courses.stream().map(CourseMapper::toDto).collect(Collectors.toList());
     }
 
+    //Thống kê khóa học đóng, mở
+    @GetMapping("/count")
+    public ResponseEntity<Map<String, Long>> countCoursesByStatus(){
+        log.info("Count courses open and close");
+        Map<String, Long> courses = iCourseService.countCoursesByStatus();
+        return ResponseEntity.ok(courses);
+    }
+
+    //Thống kê thời gian bất đầu và thời gian kết thúc
+    @GetMapping("/date")
+    public ResponseEntity<List<CourseDateDTO>> getAllCourseDates() {
+        List<CourseDateDTO> courseDates = iCourseService.getAllCourseDates();
+        return ResponseEntity.ok(courseDates);
+    }
 }

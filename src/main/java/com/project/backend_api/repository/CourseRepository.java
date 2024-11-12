@@ -21,4 +21,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
 
     @Query("SELECT c FROM  Course c WHERE c.endDate <= :currentDate")
     List<Course> findCloseCourses(@Param("currentDate") LocalDate currentDate);
+
+    List<Course> findByActivate(boolean activate);
+    long countByActivate(boolean activate);
 }

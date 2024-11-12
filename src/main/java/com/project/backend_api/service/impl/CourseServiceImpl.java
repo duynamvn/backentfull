@@ -1,10 +1,14 @@
 package com.project.backend_api.service.impl;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.project.backend_api.dto.CourseDTO;
+import com.project.backend_api.dto.CourseDateDTO;
 import com.project.backend_api.dto.StudentDTO;
 import com.project.backend_api.mapper.StudentMapper;
 import com.project.backend_api.model.TuitionFee;
@@ -152,6 +156,28 @@ public class CourseServiceImpl implements ICourseService{
         List<Course> courses = courseRepository.findCloseCourses(currentDate);
         log.info("Retrieved {} closed courses", courses.size());
         return courses;
+    }
+
+    @Override
+    public Map<String, Long> countCoursesByStatus() {
+        log.info("Fetching course open and close by status");
+        long openCourseCount = getOpenCourses().size();
+        long closedCourseCount = getClosedCourses().size();
+
+        Map<String, Long> map = new HashMap<>();
+        map.put("open", openCourseCount);
+        map.put("closed", closedCourseCount);
+
+        log.info("Course open: {}, Course closed: {}", openCourseCount, closedCourseCount);
+
+        return map;
+    }
+
+    @Override
+    public List<CourseDateDTO> getAllCourseDates() {
+        return courseRepository.findAll().stream()
+                .map(course -> new CourseDateDTO(course.getId(), course.getCourseName(), course.getStartDate(), course.getEndDate()))
+                .collect(Collectors.toList());
     }
 
 }

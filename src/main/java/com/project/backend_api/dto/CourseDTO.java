@@ -2,6 +2,7 @@ package com.project.backend_api.dto;
 
 import java.time.LocalDate;
 
+import com.project.backend_api.model.Course;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,5 @@ public class CourseDTO {
     private Boolean activate;
     private SessionDTO session;
     private TopicDTO topic;
-    
     
 }
