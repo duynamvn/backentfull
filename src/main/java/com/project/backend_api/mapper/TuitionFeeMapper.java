@@ -1,10 +1,8 @@
 package com.project.backend_api.mapper;
 
-import com.project.backend_api.dto.CourseDTO;
-import com.project.backend_api.dto.SessionDTO;
-import com.project.backend_api.dto.TopicDTO;
-import com.project.backend_api.dto.TuitionFeeDTO;
+import com.project.backend_api.dto.*;
 import com.project.backend_api.model.Course;
+import com.project.backend_api.model.Student;
 import com.project.backend_api.model.TuitionFee;
 
 public class TuitionFeeMapper {
@@ -18,8 +16,33 @@ public class TuitionFeeMapper {
         dto.setCollectedMoney(tuitionFee.getCollectedMoney());
         dto.setActivate(tuitionFee.getActivate());
 
+        Student student = tuitionFee.getStudent();
+        if (student != null && Boolean.TRUE.equals(tuitionFee.getStudent().getIsActive()) ) {
+            StudentDTO studentDTO = new StudentDTO();
+            studentDTO.setId(student.getId());
+            studentDTO.setStudentCode(student.getStudentCode());
+            studentDTO.setFullName(student.getFullName());
+            studentDTO.setDateOfBirth(student.getDateOfBirth());
+            studentDTO.setAddress(student.getAddress());
+            studentDTO.setPhoneNumber(student.getPhoneNumber());
+            studentDTO.setGender(student.getGender());
+            studentDTO.setEmail(student.getEmail());
+            studentDTO.setNationalID(student.getNationalID());
+            studentDTO.setImageName(student.getImageName());
+            studentDTO.setIsActive(student.getIsActive());
+            if (student.getStudentType() != null) {
+                StudentTypeDTO studentTypeDTO = new StudentTypeDTO();
+                studentTypeDTO.setId(student.getStudentType().getId());
+                studentTypeDTO.setStudentTypeName(student.getStudentType().getStudentTypeName());
+                studentDTO.setStudentType(studentTypeDTO);
+            }
+            dto.setStudent(studentDTO);
+        } else {
+            dto.setStudent(null);
+        }
+
         Course course = tuitionFee.getCourse();
-        if (course != null){
+        if (course != null && Boolean.TRUE.equals(tuitionFee.getCourse().getIsActive()) ) {
             CourseDTO courseDTO = new CourseDTO();
             courseDTO.setId(course.getId());
             courseDTO.setCourseCode(course.getCourseCode());
@@ -48,6 +71,8 @@ public class TuitionFeeMapper {
                 courseDTO.setTopic(topicDTO);
             }
             dto.setCourse(courseDTO);
+        } else {
+            dto.setCourse(null);
         }
         if (tuitionFee.getCourse() != null && tuitionFee.getCourse().getTopic() != null){
             dto.setOriginalPrice(tuitionFee.getCourse().getTopic().getOriginalPrice());

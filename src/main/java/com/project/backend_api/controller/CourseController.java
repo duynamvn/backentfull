@@ -1,5 +1,6 @@
 package com.project.backend_api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,10 +9,13 @@ import java.util.stream.Collectors;
 import com.project.backend_api.dto.CourseDateDTO;
 import com.project.backend_api.dto.StudentDTO;
 import com.project.backend_api.model.Student;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +32,7 @@ import com.project.backend_api.model.Course;
 import com.project.backend_api.service.ICourseService;
 
 @Slf4j
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/courses")
 public class CourseController {
@@ -169,5 +174,44 @@ public class CourseController {
     public ResponseEntity<List<CourseDateDTO>> getAllCourseDates() {
         List<CourseDateDTO> courseDates = iCourseService.getAllCourseDates();
         return ResponseEntity.ok(courseDates);
+    }
+
+    @Valid
+    @PostMapping("/addCourse")
+    public ResponseEntity<?> addCourse(@RequestBody Course course, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errorMessages = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errorMessages);
+        }
+        String courseCode = generateCourseCode(course.getCourseName());
+        course.setCourseCode(courseCode);
+        iCourseService.saveCourse(course);
+        return ResponseEntity.ok("Course added successfully");
+    }
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<Course> deactivateCourse(@PathVariable("id") Long id, @RequestBody Course course) {
+        try {
+            iCourseService.updateIsActiveStatus(id, course.getIsActive());
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+    @GetMapping("/active")
+    public ResponseEntity<?> getAllActiveCourses() {
+        List<Course> allCourses = iCourseService.getAllCourses();
+        if (allCourses == null || allCourses.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        List<Course> activeCourses = allCourses.stream().
+                filter(course -> course.getIsActive() != null && course.getIsActive())
+                .collect(Collectors.toList());
+        if (activeCourses.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No active courses");
+        }
+        List<CourseDTO> courseDTOs = activeCourses.stream().map(CourseMapper::toDto).collect(Collectors.toList());
+        return ResponseEntity.ok(courseDTOs);
     }
 }

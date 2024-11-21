@@ -28,6 +28,7 @@ public class StudentType {
 	private Long id;
 
 	private String studentTypeName;
+	private Boolean isActive;
 	
 	// Thiết lập mối quan hệ 1:n với Student
 	@OneToMany(mappedBy = "studentType", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -36,5 +37,9 @@ public class StudentType {
 
 	public StudentType(Long id){
 		this.id = id;
+	}
+
+	public Boolean getActive() {
+		return isActive;
 	}
 }

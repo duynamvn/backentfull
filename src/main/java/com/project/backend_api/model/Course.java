@@ -20,6 +20,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @AllArgsConstructor
@@ -42,8 +43,9 @@ public class Course {
 
     private Integer totalStudent;
 
-    private Boolean activate;
+    private Boolean activate ;
 
+    private Boolean isActive = true;
     // Mối quan hệ 1:N với TeachingAssignment
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference(value = "course_teaching") // Sử dụng cùng giá trị với TeachingAssignment
@@ -70,4 +72,8 @@ public class Course {
     public Course(Long id) {
         this.id = id;
     }
+    public Boolean isActive() {
+        return isActive;
+    }
+
 }

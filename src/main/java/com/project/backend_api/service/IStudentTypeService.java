@@ -11,4 +11,5 @@ public interface IStudentTypeService {
 	StudentType createStudentType(StudentType studentType);
 	StudentType updateStudentType(Long id, StudentType studentType);
 	void deleteStudentType(Long id);
+	void updateIsActiveStatus(Long id, Boolean isActive);
 }

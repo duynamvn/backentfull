@@ -31,6 +31,9 @@ public class StudentServiceImpl implements IStudentService{
 	@Override
 	public Student createStudent(Student student) {
 		// TODO Auto-generated method stub
+		if (student.isActive() == null){
+			student.setIsActive(true);
+		}
 		Optional<Student> studentWithSamePhoneNumber = studentRepository.findStudentByPhoneNumber(student.getPhoneNumber());
 		if (studentWithSamePhoneNumber.isPresent()) {
 			throw new IllegalArgumentException("Phone number already in use");
@@ -102,5 +105,27 @@ public class StudentServiceImpl implements IStudentService{
 	public List<Student> getStudentByFullName(String fullName) {
 		System.out.println("Searching for name containing: " + fullName);
 		return studentRepository.findStudentByFullName(fullName);
+	}
+
+	@Override
+	public boolean existsByEmail(String email) {
+		return studentRepository.findByEmail(email).isPresent();
+	}
+
+	@Override
+	public boolean existsByNationalID(String nationalId) {
+		return studentRepository.findByNationalID(nationalId).isPresent();
+	}
+
+	@Override
+	public void updateIsActiveStatus(Long id, Boolean isActive) {
+		Optional<Student> existingStudent = studentRepository.findById(id);
+		if (existingStudent.isPresent()) {
+			Student student = existingStudent.get();
+			student.setIsActive(isActive);
+			studentRepository.save(student);
+		} else {
+			throw new IllegalArgumentException("Student not found");
+		}
 	}
 }

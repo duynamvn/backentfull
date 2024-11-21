@@ -23,4 +23,6 @@ public interface ICourseService {
 
     Map<String, Long> countCoursesByStatus();
     List<CourseDateDTO> getAllCourseDates();
+
+    void updateIsActiveStatus(Long id, Boolean isActive);
 }

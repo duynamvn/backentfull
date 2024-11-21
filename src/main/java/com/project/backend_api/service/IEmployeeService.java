@@ -12,4 +12,7 @@ public interface IEmployeeService {
     Employee saveEmployee(Employee employee);
     Employee updateEmployee(Long id, Employee employee);
     void deleteEmployee(Long id);
+    boolean existsByEmail(String email);
+    boolean existsByNationalID(String nationalId);
+    public void updateIsActiveStatus(Long id, Boolean isActive);
 }

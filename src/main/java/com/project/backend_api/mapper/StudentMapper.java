@@ -21,6 +21,8 @@ public class StudentMapper {
 		dto.setActivate(student.getActivate());
 		dto.setStudentCode(student.getStudentCode());
 		dto.setImageName(student.getImageName());
+		dto.setIsActive(student.getIsActive());
+		dto.setIsActive(student.getIsActive());
 		
 		StudentType studentType = student.getStudentType();
 		if (studentType != null) {

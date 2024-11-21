@@ -93,4 +93,26 @@ public class EmployeeServiceImpl implements IEmployeeService{
         employeeRepository.deleteById(id);
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return employeeRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
+    public boolean existsByNationalID(String nationalId) {
+        return employeeRepository.findByNationalID(nationalId).isPresent();
+    }
+
+    @Override
+    public void updateIsActiveStatus(Long id, Boolean isActive) {
+        Optional<Employee> existingEmployee = employeeRepository.findById(id);
+        if (existingEmployee.isPresent()) {
+            Employee employee = existingEmployee.get();
+            employee.setIsActive(isActive);
+            employeeRepository.save(employee);
+        } else {
+            throw new IllegalArgumentException("Employee not found");
+        }
+    }
+
 }

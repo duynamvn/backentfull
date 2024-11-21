@@ -1,6 +1,7 @@
 package com.project.backend_api.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,18 @@ public class StudentTypeServiceImpl implements IStudentTypeService{
 	public void deleteStudentType(Long id) {
 		// TODO Auto-generated method stub
 		studentTypeRepository.deleteById(id);
+	}
+
+	@Override
+	public void updateIsActiveStatus(Long id, Boolean isActive) {
+		Optional<StudentType> existingStudentType = studentTypeRepository.findById(id);
+		if (existingStudentType.isPresent()) {
+			StudentType studentType = existingStudentType.get();
+			studentType.setIsActive(isActive);
+			studentTypeRepository.save(studentType);
+		} else {
+			throw new IllegalArgumentException("Student Type Not Found");
+		}
 	}
 
 	@Override

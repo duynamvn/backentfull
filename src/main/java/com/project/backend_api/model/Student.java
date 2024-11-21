@@ -66,6 +66,8 @@ public class Student {
     private String studentCode; // Mã sinh viên
 
 	private String imageName;
+
+    private Boolean isActive = true;
     
     // Thiết lập mối quan hệ n:1 với CategoryStudent
     @ManyToOne
@@ -85,5 +87,12 @@ public class Student {
 
     public Student(Long id){
         this.id = id;
+    }
+    public Boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 }

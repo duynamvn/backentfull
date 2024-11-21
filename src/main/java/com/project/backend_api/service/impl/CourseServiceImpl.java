@@ -67,6 +67,9 @@ public class CourseServiceImpl implements ICourseService{
             existingCourse.setSession(course.getSession());
             existingCourse.setTopic(course.getTopic());
 
+            if (course.isActive() == null){
+                course.setActivate(true);
+            }
             // Kiểm tra xem session có tồn tại hay không
             if (course.getSession() != null && course.getSession().getId() != null) {
                 existingCourse.setSession(course.getSession());
@@ -180,4 +183,15 @@ public class CourseServiceImpl implements ICourseService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void updateIsActiveStatus(Long id, Boolean isActive) {
+        Optional<Course> existingCourse = courseRepository.findById(id);
+        if (existingCourse.isPresent()) {
+            Course course = existingCourse.get();
+            course.setIsActive(isActive);
+            courseRepository.save(course);
+        } else {
+            throw new IllegalArgumentException("Course not found with id: " + id);
+        }
+    }
 }

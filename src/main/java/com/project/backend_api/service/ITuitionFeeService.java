@@ -12,4 +12,5 @@ public interface ITuitionFeeService {
     TuitionFee createTuitionFee(TuitionFee tuitionFee);
     TuitionFee updateTuitionFee(Long id, TuitionFee tuitionFee);
     void deleteTuitionFee(Long id);
+    void updateIsActiveStatus(Long id, Boolean isActive);
 }

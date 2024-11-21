@@ -1,11 +1,16 @@
 package com.project.backend_api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,4 +65,38 @@ public class TuitionFeeController {
         iTuitionFeeService.deleteTuitionFee(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Valid
+    @PostMapping("/addTuitionFee")
+    public ResponseEntity<?> addTuitionFee(@RequestBody TuitionFee tuitionFee, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            List<String> errorMassages = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            return ResponseEntity.badRequest().body(errorMassages);
+        }
+        iTuitionFeeService.createTuitionFee(tuitionFee);
+        return ResponseEntity.ok("Tuition fee added successfully");
+    }
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<TuitionFee> deactivateTuitionFee(@PathVariable("id") Long id, @RequestBody TuitionFee tuitionFee){
+        try {
+            iTuitionFeeService.updateIsActiveStatus(id, tuitionFee.getIsActive());
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+    @GetMapping("/active")
+    public ResponseEntity<?> getAllActiveTuitionFee() {
+        List<TuitionFee> activeTuitionFees = iTuitionFeeService.getAllTuitionFee();
+        if (activeTuitionFees.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No active tuition fees");
+        }
+        List<TuitionFeeDTO> tuitionFeeDTOs = activeTuitionFees.stream()
+                .map(TuitionFeeMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(tuitionFeeDTOs);
+    }
+
 }

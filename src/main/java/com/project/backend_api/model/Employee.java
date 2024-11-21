@@ -59,6 +59,7 @@ public class Employee {
     private String address;
 
     private String imageName;
+    private Boolean isActive = true;
     
     // Mối quan hệ 1:N với TeachingAssignment
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -88,5 +89,8 @@ public class Employee {
 
     public Employee(Long id){
         this.id = id;
+    }
+    public Boolean isActive() {
+        return isActive;
     }
 }

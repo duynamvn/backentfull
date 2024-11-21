@@ -37,6 +37,8 @@ public class TuitionFee {
 
     private Boolean activate;
 
+    private Boolean isActive = true;
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     @JsonBackReference(value = "tuitionCourse")
@@ -49,5 +51,8 @@ public class TuitionFee {
 
     public TuitionFee(Long id){
         this.id = id;
+    }
+    public Boolean isActive() {
+        return isActive;
     }
 }

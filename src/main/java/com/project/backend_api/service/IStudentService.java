@@ -16,4 +16,10 @@ public interface IStudentService {
 	Long getLatestStudentId();
 	Optional<Student> getStudentByStudentCode(String studentCode);
 	List<Student> getStudentByFullName(String fullName);
+
+	boolean existsByEmail(String email);
+	boolean existsByNationalID(String nationalId);
+
+	// chỉ updat isActive
+	void updateIsActiveStatus(Long id, Boolean isActive);
 }

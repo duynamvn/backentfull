@@ -1,6 +1,8 @@
 package com.project.backend_api.dto;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,5 +38,7 @@ public class StudentDTO {
     private StudentTypeDTO studentType;
 
     private Boolean collectedMoney;
+
+    private Boolean isActive;
 
 }

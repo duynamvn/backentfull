@@ -2,6 +2,7 @@ package com.project.backend_api.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,12 @@ public class TuitionFeeServiceImpl implements ITuitionFeeService{
 
     @Override
     public List<TuitionFee> getAllTuitionFee() {
-        return tuitionFeeRepository.findAll();
+        return tuitionFeeRepository.findAll().stream()
+                .filter(tuitionFee ->
+                        (tuitionFee.getStudent() == null || Boolean.TRUE.equals(tuitionFee.getStudent().getIsActive())) &&
+                                (tuitionFee.getCourse() == null || Boolean.TRUE.equals(tuitionFee.getCourse().getIsActive()))
+                )
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -46,6 +52,18 @@ public class TuitionFeeServiceImpl implements ITuitionFeeService{
     @Override
     public void deleteTuitionFee(Long id) {
         tuitionFeeRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateIsActiveStatus(Long id, Boolean isActive) {
+        Optional<TuitionFee> existingTuitionFee = tuitionFeeRepository.findById(id);
+        if (existingTuitionFee.isPresent()) {
+            TuitionFee tuitionFee = existingTuitionFee.get();
+            tuitionFee.setIsActive(isActive);
+            tuitionFeeRepository.save(tuitionFee);
+        } else {
+            throw new IllegalArgumentException("TuitionFee not found");
+        }
     }
 
 }

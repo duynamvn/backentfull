@@ -18,7 +18,7 @@ public class TuitionFeeDTO {
     private Boolean collectedMoney;
     private Boolean activate;
     private CourseDTO course;
-
-	private Double originalPrice;
-	private Double promotionalPrice;
+    private StudentDTO student;
+    private Double originalPrice;
+    private Double promotionalPrice;
 }
