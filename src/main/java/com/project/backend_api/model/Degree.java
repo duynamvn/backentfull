@@ -30,12 +30,16 @@ public class Degree {
 	private String degreeName;
 
 	private String note;
-	
+
+	private Boolean isActive;
 	@OneToMany(mappedBy = "degree", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Mối quan hệ 1:N với Employee
 	@JsonManagedReference(value = "emp_degree")
 	private List<Employee> employees; // Danh sách nhân viên
 
 	public Degree(Long id){
 		this.id = id;
+	}
+	public Boolean isActive(){
+		return isActive;
 	}
 }

@@ -30,6 +30,8 @@ public class Attendance {
 	private LocalDate dateOfRecognition;
 
 	private String note;
+
+	private Boolean isActive;
 	
 	@ManyToOne
     @JoinColumn(name = "student_id")
@@ -40,4 +42,8 @@ public class Attendance {
 	@JoinColumn(name = "classSchedule_id", nullable = false)
 	@JsonBackReference(value = "attendClass")
 	private ClassSchedule classSchedule; // trường này để tham chiếu đến ClassSchedule
+
+	public Boolean isActive(){
+		return isActive;
+	}
 }

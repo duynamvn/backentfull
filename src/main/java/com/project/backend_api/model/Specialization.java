@@ -28,6 +28,7 @@ public class Specialization {
 	private Long id;
 	
 	private String specializationName;
+	private Boolean isActive = true;
 	
 	@OneToMany(mappedBy = "specialization", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference(value = "spec_emp")
@@ -35,5 +36,8 @@ public class Specialization {
 
 	public Specialization(Long id){
 		this.id = id;
+	}
+	public Boolean isActive(){
+		return isActive;
 	}
 }

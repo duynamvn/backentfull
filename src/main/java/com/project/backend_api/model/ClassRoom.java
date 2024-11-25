@@ -32,6 +32,8 @@ public class ClassRoom {
 
     private String note;
 
+    private Boolean isActive = true;
+
     @OneToMany(mappedBy = "classRoom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference(value = "scheduleRoom")
     private List<ClassSchedule> classSchedules;
@@ -41,4 +43,7 @@ public class ClassRoom {
 		this.id = id;
 	}
 
+    public Boolean isActive(){
+        return isActive;
+    }
 }

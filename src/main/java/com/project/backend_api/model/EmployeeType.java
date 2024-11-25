@@ -28,6 +28,7 @@ public class EmployeeType {
 	private Long id;
 
 	private String employeeTypeName;
+	private Boolean isActive = true;
 	
 	// Thiết lập mối quan hệ 1:N với Employee
     @OneToMany(mappedBy = "employeeType", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -36,5 +37,8 @@ public class EmployeeType {
 
 	public EmployeeType(Long id){
 		this.id = id;
+	}
+	public Boolean isActive(){
+		return isActive;
 	}
 }

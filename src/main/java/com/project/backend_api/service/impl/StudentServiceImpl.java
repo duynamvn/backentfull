@@ -3,7 +3,11 @@ package com.project.backend_api.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import com.project.backend_api.util.StudentSpecification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.project.backend_api.model.Student;
 import com.project.backend_api.repository.StudentRepository;
@@ -14,8 +18,9 @@ public class StudentServiceImpl implements IStudentService{
 
 	@Autowired
 	private StudentRepository studentRepository;
-	
-	
+	private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
+
 	@Override
 	public List<Student> getAllStudent() {
 		// TODO Auto-generated method stub
@@ -127,5 +132,37 @@ public class StudentServiceImpl implements IStudentService{
 		} else {
 			throw new IllegalArgumentException("Student not found");
 		}
+	}
+
+	@Override
+	public List<Student> searchStudents(String fullName, String studentCode, String studentTypeName) {
+		Specification<Student> spec = Specification.where(null);
+		try {
+			logger.info("Starting search for students with filters: fullName={}, studentCode={}, studentTypeName={}",
+					fullName, studentCode, studentTypeName);
+
+			if (fullName != null && !fullName.isEmpty()) {
+				spec = spec.and(StudentSpecification.hasFullName(fullName));
+			}
+			if (studentCode != null && !studentCode.isEmpty()) {
+				spec = spec.and(StudentSpecification.hasStudentCode(studentCode));
+			}
+			if (studentTypeName != null && !studentTypeName.isEmpty()) {
+				spec = spec.and(StudentSpecification.hasStudentTypeName(studentTypeName));
+			}
+
+			List<Student> students = studentRepository.findAll(spec);
+			logger.info("Search completed. Found {} students.", students.size());
+			return students;
+
+		} catch (Exception e) {
+			logger.error("Error occurred during student search", e);
+			throw new RuntimeException("Error during student search", e);
+		}
+	}
+
+	@Override
+	public List<Student> findByTuitionFeeStatus(Boolean collectedMoney) {
+		return studentRepository.findByTuitionFeeStatus(collectedMoney);
 	}
 }

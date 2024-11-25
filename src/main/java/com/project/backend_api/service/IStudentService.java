@@ -22,4 +22,8 @@ public interface IStudentService {
 
 	// chỉ updat isActive
 	void updateIsActiveStatus(Long id, Boolean isActive);
+
+	List<Student> searchStudents(String fullName, String studentCode, String studentTypeName);
+
+	List<Student> findByTuitionFeeStatus(Boolean collectedMoney);
 }

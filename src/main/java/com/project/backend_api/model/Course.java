@@ -43,7 +43,7 @@ public class Course {
 
     private Integer totalStudent;
 
-    private Boolean activate ;
+    private Boolean activate;
 
     private Boolean isActive = true;
     // Mối quan hệ 1:N với TeachingAssignment

@@ -48,11 +48,11 @@ public class TuitionFeeController {
                 .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    @PostMapping
-    public ResponseEntity<TuitionFee> createTuitionFee(@RequestBody TuitionFee tuitionFee){
-        TuitionFee createTuitionFee = iTuitionFeeService.createTuitionFee(tuitionFee);
-        return ResponseEntity.ok(createTuitionFee);
-    }
+//    @PostMapping
+//    public ResponseEntity<TuitionFee> createTuitionFee(@RequestBody TuitionFee tuitionFee){
+//        TuitionFee createTuitionFee = iTuitionFeeService.createTuitionFee(tuitionFee);
+//        return ResponseEntity.ok(createTuitionFee);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<TuitionFee> updateTuitionFee(@PathVariable Long id, @RequestBody TuitionFee tuitionFee){
@@ -67,7 +67,7 @@ public class TuitionFeeController {
     }
 
     @Valid
-    @PostMapping("/addTuitionFee")
+    @PostMapping()
     public ResponseEntity<?> addTuitionFee(@RequestBody TuitionFee tuitionFee, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             List<String> errorMassages = bindingResult.getAllErrors().stream()
@@ -75,8 +75,12 @@ public class TuitionFeeController {
                     .collect(Collectors.toList());
             return ResponseEntity.badRequest().body(errorMassages);
         }
-        iTuitionFeeService.createTuitionFee(tuitionFee);
-        return ResponseEntity.ok("Tuition fee added successfully");
+        try {
+            TuitionFee createTuitionFee = iTuitionFeeService.createTuitionFee(tuitionFee);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createTuitionFee);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
     @PutMapping("/{id}/deactivate")
     public ResponseEntity<TuitionFee> deactivateTuitionFee(@PathVariable("id") Long id, @RequestBody TuitionFee tuitionFee){
@@ -98,5 +102,4 @@ public class TuitionFeeController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(tuitionFeeDTOs);
     }
-
 }

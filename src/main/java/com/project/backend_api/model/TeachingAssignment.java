@@ -26,7 +26,7 @@ public class TeachingAssignment {
     private Long id;
 
     private Boolean activate;
-
+    private Boolean isActive = true;
     @ManyToOne
     @JoinColumn(name = "employee_id")
     @JsonBackReference(value = "emp_teaching")
@@ -45,5 +45,8 @@ public class TeachingAssignment {
 
     public TeachingAssignment(Long id){
         this.id = id;
+    }
+    public Boolean isActive(){
+        return isActive;
     }
 }

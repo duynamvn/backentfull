@@ -19,12 +19,7 @@ public class TuitionFeeServiceImpl implements ITuitionFeeService{
 
     @Override
     public List<TuitionFee> getAllTuitionFee() {
-        return tuitionFeeRepository.findAll().stream()
-                .filter(tuitionFee ->
-                        (tuitionFee.getStudent() == null || Boolean.TRUE.equals(tuitionFee.getStudent().getIsActive())) &&
-                                (tuitionFee.getCourse() == null || Boolean.TRUE.equals(tuitionFee.getCourse().getIsActive()))
-                )
-                .collect(Collectors.toList());
+        return tuitionFeeRepository.findAll();
     }
 
     @Override
@@ -34,18 +29,24 @@ public class TuitionFeeServiceImpl implements ITuitionFeeService{
 
     @Override
     public TuitionFee createTuitionFee(TuitionFee tuitionFee) {
+        if (tuitionFee.getCourse() == null || !tuitionFee.getCourse().getActivate()) {
+            throw new IllegalArgumentException("Cannot create tuition fee for an inactive course");
+        }
         return tuitionFeeRepository.save(tuitionFee);
     }
 
     @Override
     public TuitionFee updateTuitionFee(Long id, TuitionFee tuitionFee) {
-        TuitionFee existingTuitionFee = tuitionFeeRepository.findById(id).orElseThrow(null);
+        TuitionFee existingTuitionFee = tuitionFeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Tuition fee not found with id"));
+
         existingTuitionFee.setRegistrationDate(tuitionFee.getRegistrationDate());
         existingTuitionFee.setCollectionDate(tuitionFee.getCollectionDate());
         existingTuitionFee.setNote(tuitionFee.getNote());
         existingTuitionFee.setCollectedMoney(tuitionFee.getCollectedMoney());
         existingTuitionFee.setActivate(tuitionFee.getActivate());
         existingTuitionFee.setCourse(tuitionFee.getCourse());
+        existingTuitionFee.setStudent(tuitionFee.getStudent());
         return tuitionFeeRepository.save(existingTuitionFee);
     }
 

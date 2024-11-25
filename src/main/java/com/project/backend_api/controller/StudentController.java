@@ -1,11 +1,14 @@
 package com.project.backend_api.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -25,8 +28,7 @@ public class StudentController {
 
 	@Autowired
 	private IStudentService iStudentService;
-    @Autowired
-    private View error;
+	private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
 	@GetMapping
 	public ResponseEntity<List<StudentDTO>>  getAllStudent(){
@@ -112,13 +114,33 @@ public class StudentController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<List<StudentDTO>> getStudentByFullName(@RequestParam(name = "fullName") String fullName,
-																 @RequestParam("age") Integer age) {
-		List<Student> student = iStudentService.getStudentByFullName(fullName);
-		List<StudentDTO> studentDTO = student.stream()
-				.map(StudentMapper::toDTO)
-				.collect(Collectors.toList());
-		return ResponseEntity.ok(studentDTO);
+	public ResponseEntity<List<StudentDTO>> searchStudents(
+			@RequestParam(required = false) String fullName,
+			@RequestParam(required = false) String studentCode,
+			@RequestParam(required = false) String studentType,
+			@RequestParam(defaultValue = "true") Boolean isActive) {
+
+		logger.info("Received search request: fullName={}, studentCode={}, studentType={}, isActive={}",
+				fullName, studentCode, studentType, isActive);
+
+		if (!isActive) {
+			logger.warn("Search skipped because isActive is false.");
+			return ResponseEntity.ok(Collections.emptyList());
+		}
+
+		try {
+			List<Student> students = iStudentService.searchStudents(fullName, studentCode, studentType);
+			List<StudentDTO> studentDTOs = students.stream()
+					.map(StudentMapper::toDTO)
+					.collect(Collectors.toList());
+
+			logger.info("Search completed. Returning {} students.", studentDTOs.size());
+			return ResponseEntity.ok(studentDTOs);
+
+		} catch (Exception e) {
+			logger.error("Error during student search", e);
+			return ResponseEntity.status(500).body(Collections.emptyList());
+		}
 	}
 
 	@Valid
@@ -178,6 +200,13 @@ public class StudentController {
 		List<StudentDTO> studentDTOs = activeStudents.stream()
 				.map(StudentMapper::toDTO) // Giả sử StudentMapper có phương thức toDTO()
 				.collect(Collectors.toList());
+		return ResponseEntity.ok(studentDTOs);
+	}
+	// Phân loại sinh viên theo tình trạng học phí
+	@GetMapping("/filter/tuition")
+	public ResponseEntity<List<StudentDTO>> filterStudentsByTuitionStatus(@RequestParam Boolean collectedMoney) {
+		List<Student> students = iStudentService.findByTuitionFeeStatus(collectedMoney);
+		List<StudentDTO> studentDTOs = students.stream().map(StudentMapper::toDTO).collect(Collectors.toList());
 		return ResponseEntity.ok(studentDTOs);
 	}
 }

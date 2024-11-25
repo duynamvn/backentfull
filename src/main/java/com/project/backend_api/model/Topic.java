@@ -42,6 +42,8 @@ public class Topic {
 
     private double PromotionalPrice;
 
+    private Boolean isActive;
+
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference(value = "teachTopic")
     private List<TeachingAbility> teachingAbilities;
@@ -52,5 +54,8 @@ public class Topic {
 
     public Topic(Long id){
         this.id = id;
+    }
+    public Boolean isActive(){
+        return isActive;
     }
 }

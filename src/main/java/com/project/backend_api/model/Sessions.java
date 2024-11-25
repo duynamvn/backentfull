@@ -32,6 +32,7 @@ public class Sessions {
     private LocalTime timeSlot;
 
     private String sessionName;
+    private Boolean isActive = true;
 
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference(value = "sessionCourse") // Chỉ định back-reference tại đây
@@ -40,4 +41,7 @@ public class Sessions {
 	public Sessions(Long id){
 		this.id = id;
 	}
+    public Boolean isActive(){
+        return isActive;
+    }
 }

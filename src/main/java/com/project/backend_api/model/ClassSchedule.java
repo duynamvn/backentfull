@@ -39,6 +39,8 @@ public class ClassSchedule {
 
     private LocalTime endTime;
 
+    private Boolean isActive = true;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "classroom_id")
     @JsonBackReference(value = "scheduleRoom")
@@ -53,5 +55,7 @@ public class ClassSchedule {
 	@JsonManagedReference(value = "attendClass")
 	private List<Attendance> attendances;
 
-    
+    public Boolean isActive(){
+        return isActive;
+    }
 }

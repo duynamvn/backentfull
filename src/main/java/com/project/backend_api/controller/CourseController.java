@@ -1,5 +1,6 @@
 package com.project.backend_api.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,8 +81,28 @@ public class CourseController {
     public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody Course courseDetails) {
         try {
             log.info("Updating course with id: {}", id);
+
+            // Kiểm tra đầu vào
+            if (courseDetails == null) {
+                return ResponseEntity.badRequest().body("Course details cannot be null");
+            }
+            if (courseDetails.getCourseName() == null || courseDetails.getCourseName().isEmpty()) {
+                return ResponseEntity.badRequest().body("Course name is required");
+            }
+            if (courseDetails.getStartDate() == null || courseDetails.getEndDate() == null) {
+                return ResponseEntity.badRequest().body("Start date and end date are required");
+            }
+
             Course existingCourse = iCourseService.getCourseById(id)
                     .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+
+            LocalDate today = LocalDate.now();
+            // Kiểm tra nếu khóa học đã bắt đầu hoặc kết thúc
+            if (!today.isBefore(existingCourse.getStartDate()) && !today.isAfter(existingCourse.getEndDate())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Course has already started or ended and cannot be updated");
+            }
+
             // Kiểm tra nếu tên khóa học bị thay đổi
             if (!existingCourse.getCourseName().equals(courseDetails.getCourseName())) {
                 // Tạo mã khóa học mới
@@ -191,12 +212,36 @@ public class CourseController {
         return ResponseEntity.ok("Course added successfully");
     }
     @PutMapping("/{id}/deactivate")
-    public ResponseEntity<Course> deactivateCourse(@PathVariable("id") Long id, @RequestBody Course course) {
+    public ResponseEntity<?> deactivateCourse(@PathVariable("id") Long id) {
         try {
-            iCourseService.updateIsActiveStatus(id, course.getIsActive());
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            log.info("Attempting to deactivate course with ID: {}", id);
+
+            // Lấy thông tin khóa học
+            Course currentCourse = iCourseService.getCourseById(id)
+                    .orElseThrow(() -> new RuntimeException("Course not found with ID: " + id));
+
+            LocalDate today = LocalDate.now();
+
+            // Kiểm tra nếu khóa học đang mở và đã kết thúc
+            if (!today.isBefore(currentCourse.getStartDate()) && today.isAfter(currentCourse.getEndDate())) {
+                log.warn("Course with ID: {} is currently open and already ended. Deactivation not allowed.", id);
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Course cannot be deactivated because it is currently open and already ended.");
+            }
+
+            // Cho phép hủy kích hoạt nếu không vi phạm điều kiện trên
+            currentCourse.setActivate(false);
+            iCourseService.saveCourse(currentCourse);
+
+            log.info("Course with ID: {} successfully deactivated.", id);
+            return ResponseEntity.ok("Course deactivated successfully.");
+        } catch (RuntimeException e) {
+            log.error("Error while deactivating course with ID: {}", id, e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            log.error("Unexpected error occurred while deactivating course with ID: {}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred: " + e.getMessage());
         }
     }
     @GetMapping("/active")

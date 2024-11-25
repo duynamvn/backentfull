@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.project.backend_api.dto.CourseDTO;
 import com.project.backend_api.dto.CourseDateDTO;
 import com.project.backend_api.dto.StudentDTO;
 import com.project.backend_api.mapper.StudentMapper;
 import com.project.backend_api.model.TuitionFee;
+import com.project.backend_api.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,9 @@ public class CourseServiceImpl implements ICourseService{
 	
 	@Autowired
 	private TopicRepository topicRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Override
     public Course saveCourse(Course course) {
@@ -57,6 +60,11 @@ public class CourseServiceImpl implements ICourseService{
             Course existingCourse = courseRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
             log.info("Found existing course with ID: {}", id);
+
+            LocalDate today = LocalDate.now();
+            if (!existingCourse.getStartDate().isAfter(today) && !existingCourse.getEndDate().isBefore(today)) {
+                throw new RuntimeException("Course cannot be updated because it has started or ended");
+            }
 
             existingCourse.setCourseCode(course.getCourseCode());
             existingCourse.setCourseName(course.getCourseName());
@@ -188,8 +196,14 @@ public class CourseServiceImpl implements ICourseService{
         Optional<Course> existingCourse = courseRepository.findById(id);
         if (existingCourse.isPresent()) {
             Course course = existingCourse.get();
-            course.setIsActive(isActive);
-            courseRepository.save(course);
+
+            // Kiểm tra ngày ngày hiện tại lớn hơn ngày kết thúc
+            if (LocalDate.now().isAfter(course.getEndDate())) {
+                course.setIsActive(isActive);
+                courseRepository.save(course);
+            } else {
+                throw new RuntimeException("Cannot deactivate course because the current date is not after endDate.");
+            }
         } else {
             throw new IllegalArgumentException("Course not found with id: " + id);
         }

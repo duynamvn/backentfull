@@ -29,6 +29,7 @@ public class TeachingAbility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Boolean isActive = true;
 
     // Mối quan hệ 1:N với TeachingAssignment
     @OneToMany(mappedBy = "teachingAbility", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -47,5 +48,8 @@ public class TeachingAbility {
 
     public TeachingAbility(Long id){
         this.id = id;
+    }
+    public Boolean isActive(){
+        return isActive;
     }
 }
